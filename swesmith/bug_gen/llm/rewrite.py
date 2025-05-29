@@ -52,14 +52,24 @@ LM_REWRITE = "lm_rewrite"
 
 logging.getLogger("LiteLLM").setLevel(logging.WARNING)
 litellm.suppress_debug_info = True
+litellm.drop_params = True
 random.seed(24)
 
 
 def get_function_signature(node):
-    """Generate the function signature as a string."""
-    args = [ast.unparse(arg) for arg in node.args.args]  # For Python 3.9+
-    args_str = ", ".join(args)
-    return f"def {node.name}({args_str})"
+    """Generate a signature-like string for function or class definitions."""
+    if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+        args = [ast.unparse(arg) for arg in node.args.args]
+        args_str = ", ".join(args)
+        return f"def {node.name}({args_str})"
+
+    elif isinstance(node, ast.ClassDef):
+        bases = [ast.unparse(base) for base in node.bases]
+        bases_str = f"({', '.join(bases)})" if bases else ""
+        return f"class {node.name}{bases_str}"
+
+    else:
+        raise TypeError(f"Unsupported node type: {type(node).__name__}")
 
 
 def main(
