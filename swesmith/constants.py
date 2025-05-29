@@ -27,7 +27,7 @@ LOG_DIR_RUN_VALIDATION = Path("logs/run_validation")
 LOG_DIR_TASKS = Path("logs/task_insts")
 LOG_TEST_OUTPUT_PRE_GOLD = "test_output_pre_gold.txt"
 MAX_INPUT_TOKENS = 128000
-ORG_NAME = "swesmith"
+ORG_NAME = "trash12345"
 PREFIX_BUG = "bug"
 PREFIX_METADATA = "metadata"
 REF_SUFFIX = ".ref"
@@ -74,9 +74,11 @@ INSTALL_CMAKE = (
         for v in CMAKE_VERSIONS
     ]
     + [
-        f"tar -xvzf cmake-{v}-Linux-x86_64.tar.gz && mv cmake-{v}-Linux-x86_64 /usr/share/cmake-{v}"
-        if v not in ["3.23.5", "3.27.9"]
-        else f"tar -xvzf cmake-{v}-Linux-x86_64.tar.gz && mv cmake-{v}-linux-x86_64 /usr/share/cmake-{v}"
+        (
+            f"tar -xvzf cmake-{v}-Linux-x86_64.tar.gz && mv cmake-{v}-Linux-x86_64 /usr/share/cmake-{v}"
+            if v not in ["3.23.5", "3.27.9"]
+            else f"tar -xvzf cmake-{v}-Linux-x86_64.tar.gz && mv cmake-{v}-linux-x86_64 /usr/share/cmake-{v}"
+        )
         for v in CMAKE_VERSIONS
     ]
     + [
@@ -183,7 +185,7 @@ SPECS_REPO_FAKER = {"8b401a7d68f5fda1276f36a8fc502ef32050ed72": DEFAULT_SPECS}
 SPECS_REPO_FEEDPARSER = {"cad965a3f52c4b077221a2142fb14ef7f68cd576": DEFAULT_SPECS}
 SPECS_REPO_FLAKE8 = {"cf1542cefa3e766670b2066dd75c4571d682a649": DEFAULT_SPECS}
 SPECS_REPO_FLASHTEXT = {"b316c7e9e54b6b4d078462b302a83db85f884a94": DEFAULT_SPECS}
-SPECS_REPO_FLASK = {"bc098406af9537aacc436cb2ea777fbc9ff4c5aa": DEFAULT_SPECS}
+SPECS_REPO_FLASK = {"a5f9742398c9429ef84ac8a57b0f3eb418394d9e": DEFAULT_SPECS}
 SPECS_REPO_FREEZEGUN = {"5f171db0aaa02c4ade003bbc8885e0bb19efbc81": DEFAULT_SPECS}
 SPECS_REPO_FUNCY = {"207a7810c216c7408596d463d3f429686e83b871": DEFAULT_SPECS}
 SPECS_REPO_FURL = {"da386f68b8d077086c25adfd205a4c3d502c3012": DEFAULT_SPECS}
@@ -543,7 +545,8 @@ SPECS_REPO_MONKEYTYPE = {
     "70c3acf62950be5dfb28743c7a719bfdecebcd84": DEFAULT_SPECS,
 }
 
-
+SPECS_REPO_XARRAY = {"07430e1e7feebba1d28c22e1a362329dc8d7f725": DEFAULT_SPECS}
+SPECS_REPO_REQUESTS = {"c65c780849563c891f35ffc98d3198b71011c012": DEFAULT_SPECS}
 MAP_REPO_TO_SPECS = {
     "adrienverge/yamllint": SPECS_REPO_YAMLLINT,
     "agronholm/exceptiongroup": SPECS_REPO_EXCEPTIONGROUP,
@@ -642,6 +645,7 @@ MAP_REPO_TO_SPECS = {
     "PyCQA/flake8": SPECS_REPO_FLAKE8,
     "pydantic/pydantic": SPECS_REPO_PYDANTIC,
     "pydata/patsy": SPECS_REPO_PATSY,
+    "pydata/xarray": SPECS_REPO_XARRAY,
     "pydicom/pydicom": SPECS_REPO_PYDICOM,
     "pygments/pygments": SPECS_REPO_PYGMENTS,
     "pylint-dev/astroid": SPECS_REPO_ASTROID,
@@ -679,4 +683,5 @@ MAP_REPO_TO_SPECS = {
     "un33k/python-slugify": SPECS_REPO_PYTHON_SLUGIFY,
     "vi3k6i5/flashtext": SPECS_REPO_FLASHTEXT,
     "weaveworks/grafanalib": SPECS_REPO_GRAFANALIB,
+    "psf/requests": SPECS_REPO_REQUESTS,
 }
