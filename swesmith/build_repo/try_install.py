@@ -25,14 +25,17 @@ def cleanup(repo_name: str, env_name: str | None = None):
         "conda env list", check=True, shell=True, text=True, capture_output=True
     ).stdout
     if env_name is not None and env_name in env_list:
-        subprocess.run(
-            f"conda env remove -n {env_name} -y",
-            check=True,
-            shell=True,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
-        print("> Removed conda environment")
+        try:
+            subprocess.run(
+                f"conda env remove -n {env_name} -y",
+                check=True,
+                shell=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            print("> Removed conda environment")
+        except subprocess.CalledProcessError:
+            print(f"> Failed to remove conda environment {env_name}. It may not exist.")
 
 
 def main(
@@ -46,9 +49,9 @@ def main(
     print(f"> Building image for {repo} at commit {commit or 'latest'}")
     repo_name = repo.split("/")[-1]
 
-    assert os.path.exists(install_script), (
-        f"Installation script {install_script} does not exist"
-    )
+    assert os.path.exists(
+        install_script
+    ), f"Installation script {install_script} does not exist"
     assert install_script.endswith(".sh"), "Installation script must be a bash script"
     install_script = os.path.abspath(install_script)
 
@@ -90,7 +93,11 @@ def main(
 
         # Construct installation script
         installation_cmds = [
-            ". /opt/miniconda3/bin/activate",
+            (
+                ". /opt/miniconda3/bin/activate"
+                if os.path.exists("/opt/miniconda3/bin/activate")
+                else ". ~/miniconda3/bin/activate"
+            ),
             f"conda create -n {ENV_NAME} python={python_version} -yq",
             f"conda activate {ENV_NAME}",
             f". {install_script}",
