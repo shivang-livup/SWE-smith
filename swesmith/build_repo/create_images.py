@@ -78,7 +78,11 @@ def get_repo_setup_script(repo: str, commit: str, org: str):
         f"rm {path_to_reqs}",
         f"conda activate {ENV_NAME}",
         'echo "Current environment: $CONDA_DEFAULT_ENV"',
-    ] + specs["install"]
+    ]  # + specs["install"]
+    install_cmds = list(specs["install"])
+    if not any("pytest" in cmd for cmd in install_cmds):
+        install_cmds.append("pip install pytest")
+    setup_commands += install_cmds
     return "\n".join(setup_commands) + "\n"
 
 
